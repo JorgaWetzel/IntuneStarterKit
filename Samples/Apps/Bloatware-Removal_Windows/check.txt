@@ -4,4 +4,4 @@ C:\Program Files\_MEM\Validation\
 File or folder: 
 Bloatware-Removal_Windows
 
-File or folder exists
+File or folder exists 
