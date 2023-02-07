@@ -76,12 +76,13 @@ function Add-ISKApps {
             }
         } 
         
-        <# Get TenantID
+        <# Get TenantID  #>
         Write-Verbose "Get Tenant ID"
         $uri = "https://graph.microsoft.com/v1.0/organization"
         $Method = "GET"
         $TenantID = (Invoke-MgGraphRequest -Method $Method -uri $uri).value.id
         
+      
         
         # Create Acces Token for MSIntuneGraph
         Write-Verbose "Connect to MS Intune Enviroment via MsalToken"
@@ -94,7 +95,7 @@ function Add-ISKApps {
                     "ExpiresOn" = $AccessToken.ExpiresOn.LocalDateTime
                 }
         Write-Verbose "Token until: $($Global:AuthenticationHeader.ExpiresOn)"    
-       #>
+       
             
         $AllAppFolders = Get-ChildItem $PathLocal 
     
