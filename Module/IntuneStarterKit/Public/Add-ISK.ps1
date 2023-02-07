@@ -44,11 +44,11 @@ function Add-ISK {
 
         [parameter(Mandatory = $false, HelpMessage = "Prefix for the apps install group (if -AppGroup in in place)")]
         [ValidateNotNullOrEmpty()]
-        [string]$AppRepoPath = "https://github.com/FlorianSLZ/IntuneStarterKit/tree/main/Samples/Apps",
+        [string]$AppRepoPath = "https://github.com/JorgaWetzel/IntuneStarterKit/tree/main/Samples/Apps",
 
         [parameter(Mandatory = $false, HelpMessage = "Prefix for the apps install group (if -AppGroup in in place)")]
         [ValidateNotNullOrEmpty()]
-        [string]$ConfigRepoPath = "https://github.com/FlorianSLZ/IntuneStarterKit/tree/main/Samples/Configuration"
+        [string]$ConfigRepoPath = "https://github.com/JorgaWetzel/IntuneStarterKit/tree/main/Samples/Configuration"
         
     )
 

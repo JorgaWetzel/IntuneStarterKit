@@ -30,7 +30,7 @@ function Add-ISKApps {
     param (
         [parameter(Mandatory = $false, HelpMessage = "Path to the installwin(s), local or online")]
         [ValidateNotNullOrEmpty()]
-        [string]$Path = "https://github.com/FlorianSLZ/IntuneStarterKit/tree/main/Samples/Apps",
+        [string]$Path = "https://github.com/JorgaWetzel/IntuneStarterKit/tree/main/Samples/Apps",
 
         [parameter(Mandatory = $false, HelpMessage = "App publisher")]
         [ValidateNotNullOrEmpty()]
@@ -108,7 +108,7 @@ function Add-ISKApps {
             $RequirementRule = New-IntuneWin32AppRequirementRule -Architecture "x64" -MinimumSupportedWindowsRelease "2004"
     
             # Create PowerShell script detection rule
-            $DetectionScriptFile = (Get-ChildItem $AppFolder.FullName -Filter "check.ps1").FullName
+            $DetectionScriptFile = (Get-ChildItem $AppFolder.FullName -Filter "detect.ps1").FullName
             $DetectionRule = New-IntuneWin32AppDetectionRuleScript -ScriptFile $DetectionScriptFile -EnforceSignatureCheck $false -RunAs32Bit $false
             
             # install command
