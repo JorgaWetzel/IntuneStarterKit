@@ -34,7 +34,7 @@ function Add-ISKApps {
 
         [parameter(Mandatory = $false, HelpMessage = "App publisher")]
         [ValidateNotNullOrEmpty()]
-        [string]$Publisher = "scloud.work",
+        [string]$Publisher = "oneICT",
 
         [parameter(Mandatory = $false, HelpMessage = "Path where online files will be stored")]
         [ValidateNotNullOrEmpty()]
@@ -81,7 +81,7 @@ function Add-ISKApps {
         $uri = "https://graph.microsoft.com/v1.0/organization"
         $Method = "GET"
         $TenantID = (Invoke-MgGraphRequest -Method $Method -uri $uri).value.id
-        #>
+        
         
         # Create Acces Token for MSIntuneGraph
         Write-Verbose "Connect to MS Intune Enviroment via MsalToken"
@@ -94,7 +94,7 @@ function Add-ISKApps {
                     "ExpiresOn" = $AccessToken.ExpiresOn.LocalDateTime
                 }
         Write-Verbose "Token until: $($Global:AuthenticationHeader.ExpiresOn)"    
-
+       #>
             
         $AllAppFolders = Get-ChildItem $PathLocal 
     
