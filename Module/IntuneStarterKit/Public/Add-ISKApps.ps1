@@ -30,11 +30,11 @@ function Add-ISKApps {
     param (
         [parameter(Mandatory = $false, HelpMessage = "Path to the installwin(s), local or online")]
         [ValidateNotNullOrEmpty()]
-        [string]$Path = "https://github.com/FlorianSLZ/IntuneStarterKit/tree/main/Samples/Apps",
-
+        [string]$Path = "https://github.com/JorgaWetzel/IntuneStarterKit/tree/main/Samples/Apps",
+	
         [parameter(Mandatory = $false, HelpMessage = "App publisher")]
         [ValidateNotNullOrEmpty()]
-        [string]$Publisher = "scloud.work",
+        [string]$Publisher = "oneICT",
 
         [parameter(Mandatory = $false, HelpMessage = "Path where online files will be stored")]
         [ValidateNotNullOrEmpty()]
@@ -81,7 +81,7 @@ function Add-ISKApps {
         $uri = "https://graph.microsoft.com/v1.0/organization"
         $Method = "GET"
         $TenantID = (Invoke-MgGraphRequest -Method $Method -uri $uri).value.id
-        #>
+        
         
         # Create Acces Token for MSIntuneGraph
         Write-Verbose "Connect to MS Intune Enviroment via MsalToken"
@@ -94,12 +94,12 @@ function Add-ISKApps {
                     "ExpiresOn" = $AccessToken.ExpiresOn.LocalDateTime
                 }
         Write-Verbose "Token until: $($Global:AuthenticationHeader.ExpiresOn)"    
-
+       #>
             
         $AllAppFolders = Get-ChildItem $PathLocal 
     
         foreach($AppFolder in $AllAppFolders){
-            Write-Verbose "Processing App: $($AppFolder.Name) "
+            Write-Verbose "Processing App: $($AppFolder.Name)"
             
             # Read intunewin file
             $IntuneWinFile = (Get-ChildItem $AppFolder.FullName -Filter "*.intunewin").FullName
@@ -108,7 +108,7 @@ function Add-ISKApps {
             $RequirementRule = New-IntuneWin32AppRequirementRule -Architecture "x64" -MinimumSupportedWindowsRelease "2004"
     
             # Create PowerShell script detection rule
-            $DetectionScriptFile = (Get-ChildItem $AppFolder.FullName -Filter "check.ps1").FullName
+            $DetectionScriptFile = (Get-ChildItem $AppFolder.FullName -Filter "detect.ps1").FullName
             $DetectionRule = New-IntuneWin32AppDetectionRuleScript -ScriptFile $DetectionScriptFile -EnforceSignatureCheck $false -RunAs32Bit $false
             
             # install command
