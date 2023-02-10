@@ -1,3 +1,0 @@
-Dependency=Chocolatey
-Description=PDFCreator easily creates PDFs from any Windows program. Use it like a printer in Word, StarCalc or any other Windows application.
-
