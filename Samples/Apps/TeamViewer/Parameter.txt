@@ -1,3 +1,2 @@
 Dependency=Chocolatey
-Description=TeamViewer connects people, places and things around the world on the widest array of platforms and technologies.Free for private use. Commercial users are welcome to use for trial purposes.
-
+Description=TeamViewer ist eine Remote Loesung womit Sie mit ein Techniker ihren Bildschirm teilen koennen.

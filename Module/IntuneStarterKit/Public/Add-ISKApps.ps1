@@ -103,6 +103,10 @@ function Add-ISKApps {
             Write-Verbose "Processing App: $($AppFolder.Name)"
             
             # Read intunewin file
+            $AppExist = (Get-IntuneWin32App -DisplayName $AppFolder.Name  | Select-Object -First 1).displayName
+            if($AppExist){Write-Host "$AppFolder allready exist in Intune, nothing to do here, skip this app" -ForegroundColor Green}
+            if(!$AppExist){
+           
             $IntuneWinFile = (Get-ChildItem $AppFolder.FullName -Filter "*.intunewin").FullName
             #$IntuneWinFile = "install.intunewin"
     
@@ -152,7 +156,8 @@ function Add-ISKApps {
             # Add assignment for all users
             Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
             # Add assignment for all devices
-            Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
+            Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "required" -Notification "showAll" -Verbose
+
                         
             $DependencyValue = $values.Dependency
             try{
@@ -185,8 +190,13 @@ function Add-ISKApps {
                 Write-Verbose $AppAssigmentRequest
             }
 
+            }
+        
+            
+
             Start-sleep -s 10
         }
+        
 
         Write-Host "Apps imported: " -ForegroundColor Green
         $($AllAppFolders.Name)
