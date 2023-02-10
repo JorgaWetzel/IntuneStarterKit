@@ -100,10 +100,11 @@ function Add-ISKApps {
         $AllAppFolders = Get-ChildItem $PathLocal 
     
         foreach($AppFolder in $AllAppFolders){
-            Write-Verbose "Processing App: $($AppFolder.Name) "
+            Write-Verbose "Processing App: $($AppFolder.Name)"
             
             # Read intunewin file
             $IntuneWinFile = (Get-ChildItem $AppFolder.FullName -Filter "*.intunewin").FullName
+            #$IntuneWinFile = "install.intunewin"
     
             # Create requirement rule for all platforms and Windows 10 2004
             $RequirementRule = New-IntuneWin32AppRequirementRule -Architecture "x64" -MinimumSupportedWindowsRelease "2004"
@@ -116,16 +117,58 @@ function Add-ISKApps {
             $InstallCommandLine = "powershell.exe -ExecutionPolicy Bypass -File .\install.ps1"
             $UninstallCommandLine = "powershell.exe -ExecutionPolicy Bypass -File .\uninstall.ps1"
 
+            # Read Parameters
+            #$PathJson = "C:\Users\wksadmin\oneICT AG\Technik - Deployment\_N-Able\Intune\_GeneralApps\TeamViewer\TeamViewer.json"
+            #$PathJson = (Get-ChildItem "$($AppFolder.FullName)\*" -Include "*.json" | Select-Object -First 1).FullName
+            #$myJson = Get-Content -Raw -Path $PathJson | ConvertFrom-Json 
+            #$myJson
+            
+            #$packageObj = get-content $PathJson | ConvertFrom-Json -Debug
+            #@{Name = "ApplicationPublisherName";Expression = {$packageObj.Author}}
+
+            # Read Parameters
+            $PathParam = (Get-ChildItem "$($AppFolder.FullName)\*" -Include "Parameter.txt" | Select-Object -First 1).FullName
+
+            if($PathParam){
+                $values = Get-Content $PathParam | Out-String | ConvertFrom-StringData
+                $values.Dependency
+                $values.Description
+                Write-Host "Add Dependency:" $values.Dependency -ForegroundColor Green
+                Write-Host "Add Description:" $values.Description -ForegroundColor Green
+            }else{
+                Write-Host "Paramerter File not exist" -ForegroundColor Red
+            }
             # check for png or jpg
             $Icon_path = (Get-ChildItem "$($AppFolder.FullName)\*" -Include "*.jpg", "*.png" | Select-Object -First 1).FullName
             if(!$Icon_path){
-                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $AppFolder.Name -Publisher $Publisher -InstallExperience "system" -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine
+                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience "system" -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine
             }else{
                 $Icon = New-IntuneWin32AppIcon -FilePath $Icon_path
-                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $AppFolder.Name -Publisher $Publisher -InstallExperience "system" -Icon $Icon -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine
+                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience "system" -Icon $Icon -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine
+            
             }
                        
             Write-Verbose $AppUpload
+            # Add assignment for all users
+            Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
+            # Add assignment for all devices
+            Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
+                        
+            $DependencyValue = $values.Dependency
+            try{
+                # Check dependency
+                if($DependencyValue){
+                    Write-Host "  Processing $DependencyValue to $AppFolder" -ForegroundColor Cyan
+                    $UploadedApp = Get-IntuneWin32App | where {$_.DisplayName -eq $AppFolder} | select name, id
+                    $DependendProgram = Get-IntuneWin32App | where {$_.DisplayName -eq $DependencyValue} | select name, id
+                    $Dependency2 = New-IntuneWin32AppDependency -id $DependendProgram.id -DependencyType AutoInstall
+                    $UploadProcess = Add-IntuneWin32AppDependency -id $AppUpload.id -Dependency $Dependency2
+                    Write-Host "  Added dependency $DependencyValue to $AppFolder" -ForegroundColor Cyan
+                }
+            }catch{
+                Write-Host "Error adding dependency for $AppFolder" -ForegroundColor Red
+                $_
+            }
 
             if($AppGroup){
                 Write-Verbose "Assign App $($AppFolder.Name) to $AssignTo"

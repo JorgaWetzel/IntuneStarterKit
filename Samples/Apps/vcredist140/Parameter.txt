@@ -1,0 +1,3 @@
+Dependency=Chocolatey
+Description=Microsoft Visual C++ Redistributable for Visual Studio 2015-2022 installs run-time components of Visual C++ libraries. These components are required to run C++ applications that are developed using Visual Studio 2015-2022 and link dynamically to Visual C++ libraries. The packages can be used to run such applications on a computer even if it does not have Visual Studio 2015-2022 installed. These packages also install run-time components of C Runtime (CRT), Standard C++, MFC, C++ AMP, and OpenMP libraries.The Visual C++ Redistributable for Visual Studio 2015-2022 consists of files vcruntime140.dll, msvcp140.dll, vcomp140.dll, vcamp140.dll, mfc140.dll and other.
+
