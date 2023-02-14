@@ -1,6 +1,7 @@
 ﻿$PackageName = "WindowsPackageManager"
 $MSIXBundle = "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
 $URL_msixbundle = "https://aka.ms/getwinget"
+$toolsDir  = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
 $Path_local = "$Env:Programfiles\oneICT"
 Start-Transcript -Path "$Path_local\Log\$PackageName-install.log" -Force
@@ -24,5 +25,9 @@ try{
 # Install file cleanup
 Start-Sleep 3 # to unblock installation file
 Remove-Item -Path "$Folder_install" -Force -Recurse
+
+copy-Item $toolsDir *.exe $env:SystemRoot\System32 /force
+reg ADD HKCU\Software\Sysinternals\PSexec /v EulaAccepted /t REG_DWORD /d 1 /f
+
 
 Stop-Transcript
