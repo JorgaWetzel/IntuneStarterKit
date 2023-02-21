@@ -153,11 +153,6 @@ function Add-ISKApps {
             }
                        
             Write-Verbose $AppUpload
-            # Add assignment for all users
-            Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
-            # Add assignment for all devices
-            Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "required" -Notification "showAll" -Verbose
-
                         
             $DependencyValue = $values.Dependency
             try{
@@ -188,6 +183,12 @@ function Add-ISKApps {
             }elseif($AssignTo){
                 $AppAssigmentRequest = Add-IntuneWin32AppAssignmentGroup -Include -ID $AppUpload.id -GroupID $AssignTo -Intent "required" -Notification "showAll"
                 Write-Verbose $AppAssigmentRequest
+            }
+            else {
+            # Add assignment for all users
+            Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
+            # Add assignment for all devices
+            Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "required" -Notification "showAll" -Verbose  <# Action when all if and elseif conditions are false #>
             }
 
             }
