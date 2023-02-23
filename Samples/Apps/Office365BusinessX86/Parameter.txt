@@ -1,3 +1,0 @@
-Dependency=Chocolatey
-Description=Office 365 Business x86
-
