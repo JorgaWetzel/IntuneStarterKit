@@ -20,8 +20,8 @@ function Connect-ISK {
         if(Get-MgContext){Disconnect-MgGraph} 
 
         #Connect-MgGraph -Scopes "User.Read.All","Group.ReadWrite.All","DeviceManagementServiceConfig.ReadWrite.All","DeviceManagementConfiguration.Read.All","DeviceManagementConfiguration.ReadWrite.All","DeviceManagementManagedDevices.PrivilegedOperations.All","DeviceManagementManagedDevices.ReadWrite.All","DeviceManagementRBAC.ReadWrite.All","DeviceManagementApps.ReadWrite.All","DeviceManagementConfiguration.ReadWrite.All","DeviceManagementServiceConfig.ReadWrite.All","Group.ReadWrite.All","Directory.Read.All","openid"
-        Connect-MgGraph 
-
+        # Connect-MgGraph -Scopes "DeviceManagementApps.Read.All, DeviceManagementApps.ReadWrite.All"
+        Connect-MgGraph
         Connect-MSGraph -Quiet 
 
         # Create Acces Token for MSIntuneGraph
