@@ -1,0 +1,3 @@
+Dependency=Chocolatey
+Description=Firefox Browser
+
