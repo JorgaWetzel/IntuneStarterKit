@@ -1,0 +1,3 @@
+Dependency=
+Description=Aktualisiert die Refreshrate für Sharepoint Mappings
+
