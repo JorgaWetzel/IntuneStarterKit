@@ -137,18 +137,20 @@ function Add-ISKApps {
                 $values = Get-Content $PathParam | Out-String | ConvertFrom-StringData
                 $values.Dependency
                 $values.Description
+                $values.RunAs
                 Write-Host "Add Dependency:" $values.Dependency -ForegroundColor Green
                 Write-Host "Add Description:" $values.Description -ForegroundColor Green
+                Write-Host "Add RunAs:" $values.RunAs -ForegroundColor Green
             }else{
                 Write-Host "Paramerter File not exist" -ForegroundColor Red
             }
             # check for png or jpg
             $Icon_path = (Get-ChildItem "$($AppFolder.FullName)\*" -Include "*.jpg", "*.png" | Select-Object -First 1).FullName
             if(!$Icon_path){
-                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience "system" -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine
+                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience $values.RunAs -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine -CompanyPortalFeaturedApp $True
             }else{
                 $Icon = New-IntuneWin32AppIcon -FilePath $Icon_path
-                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience "system" -Icon $Icon -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine
+                $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience $values.RunAs -Icon $Icon -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine -CompanyPortalFeaturedApp $True
             
             }
                        

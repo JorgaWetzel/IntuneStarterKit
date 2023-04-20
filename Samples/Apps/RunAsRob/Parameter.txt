@@ -1,3 +1,4 @@
 Dependency=
 Description=RunAsRob ermoeglicht nicht Administratoren das ausfuehren von Admin Tasks
+RunAs=system
 

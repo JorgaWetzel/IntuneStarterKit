@@ -1,3 +1,3 @@
 Dependency=
-Description=Aktualisiert die Refreshrate für Sharepoint Mappings
-
+Description=Veringert die Zeit für das Mappen der SharePoint Daten von 8h auf sofot
+RunAs=user

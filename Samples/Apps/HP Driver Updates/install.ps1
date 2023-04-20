@@ -1,12 +1,12 @@
-﻿$PackageName = "PR4Business"
+﻿$PackageName = "HPDriverUpdates"
 $Version = 1
 
 ##########################################################################
 #   Recurence Data
 ##########################################################################
 
-$Schedule_Frequency = "Hourly"      # Once, Hourly, Daily, AtLogon
-$Schedule_RepeatInterval = "1"      # Number            (for Daily and Hourly)
+$Schedule_Frequency = "Daily"      # Once, Hourly, Daily, AtLogon
+$Schedule_RepeatInterval = "30"      # Number            (for Daily and Hourly)
 $Schedule_StartDate = "2023-01-30"  # YYYY.MM.DD        (for Once)
 $Schedule_StartTime = "8am"         # ex 8am or 5pm     (for Once, Hourly, Daily)
 
@@ -48,6 +48,7 @@ if(Test-RunningAsSystem){$global:Path_local = "$ENV:Programfiles\_MEM"}
 else{$global:Path_local = "$ENV:LOCALAPPDATA\_MEM"}
 
 Start-Transcript -Path "$global:Path_local\Log\$PackageName-install.log" -Force
+choco install DriverUpdate -source=oneICT -y
 
 try{
     # local Path

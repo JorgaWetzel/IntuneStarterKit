@@ -1,0 +1,2 @@
+Dependency=
+Description=winget updater all at start
