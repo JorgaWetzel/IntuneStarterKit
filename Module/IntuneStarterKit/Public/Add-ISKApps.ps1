@@ -138,6 +138,7 @@ function Add-ISKApps {
                 $values.Dependency
                 $values.Description
                 $values.RunAs
+                Write-Host "Add App:" $AppFolder.Name -ForegroundColor Green
                 Write-Host "Add Dependency:" $values.Dependency -ForegroundColor Green
                 Write-Host "Add Description:" $values.Description -ForegroundColor Green
                 Write-Host "Add RunAs:" $values.RunAs -ForegroundColor Green
