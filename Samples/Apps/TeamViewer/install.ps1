@@ -11,9 +11,9 @@ if ($ChocoPrg_Version -gt [System.Version]"2.0") {
 }
 
 if ($localprograms -like "*$ProgramName*") {
-    C:\ProgramData\chocolatey\choco.exe upgrade $ProgramName -y
+    C:\ProgramData\chocolatey\choco.exe upgrade $ProgramName -ignore-chechsums -y
 } else {
-    C:\ProgramData\chocolatey\choco.exe install $ProgramName -y
+    C:\ProgramData\chocolatey\choco.exe install $ProgramName -ignore-chechsums -y
 }
 
 Stop-Transcript
