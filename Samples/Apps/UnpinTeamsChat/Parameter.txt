@@ -1,0 +1,4 @@
+Dependency=
+Description=Entfernt Teams Chat von der Taskliste
+RunAs=user
+Group=

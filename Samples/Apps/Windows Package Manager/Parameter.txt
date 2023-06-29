@@ -1,3 +1,4 @@
 Dependency=
 Description=Winget ist ein Packetmanager von aus dem Hause Microsoft.
 RunAs=system
+Group=

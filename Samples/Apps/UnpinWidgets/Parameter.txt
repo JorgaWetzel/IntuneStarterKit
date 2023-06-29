@@ -1,0 +1,4 @@
+Dependency=
+Description=Entfernt Widgets von der Taskliste
+RunAs=user
+Group=

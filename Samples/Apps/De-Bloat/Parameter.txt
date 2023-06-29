@@ -1,0 +1,4 @@
+Dependency=
+Description=DeBloat Windows
+RunAs=system
+Group=

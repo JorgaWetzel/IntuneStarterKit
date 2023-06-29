@@ -103,15 +103,30 @@ function Add-ISKApps {
             Write-Verbose "Processing App: $($AppFolder.Name)"
             
             # Read intunewin file
-            $AppExist = (Get-IntuneWin32App -DisplayName $AppFolder.Name  | Select-Object -First 1).displayName
-            if($AppExist){Write-Host "$AppFolder allready exist in Intune, nothing to do here, skip this app" -ForegroundColor Green}
-            if(!$AppExist){
+
+            $AppExist = (Get-IntuneWin32App -DisplayName $AppFolder.Name | Select-Object -First 1).displayName
+
+            if ($AppExist -and !$OverWrite) {
+                Write-Host "$AppFolder.Name already exists in Intune, nothing to do here, skip this app" -ForegroundColor Green
+                continue
+            }
+            else {
+                # Überprüfen, ob die App bereits vorhanden ist
+                if (Get-IntuneWin32App -DisplayName $AppFolder.Name) {
+                    # App löschen
+                    Remove-IntuneWin32App -DisplayName $AppFolder.Name
+                    Write-Host "Die App war schon vorhanden und wurde entfernt!" -ForegroundColor Green
+                }
+                else {
+                    Write-Host "Neue App wird erstellt." -ForegroundColor Green
+                }    
+
            
             $IntuneWinFile = (Get-ChildItem $AppFolder.FullName -Filter "*.intunewin").FullName
             #$IntuneWinFile = "install.intunewin"
     
             # Create requirement rule for all platforms and Windows 10 2004
-            $RequirementRule = New-IntuneWin32AppRequirementRule -Architecture "x64" -MinimumSupportedWindowsRelease "2004"
+            $RequirementRule = New-IntuneWin32AppRequirementRule -Architecture "x64" -MinimumSupportedWindowsRelease "W10_1607"
     
             # Create PowerShell script detection rule
             $DetectionScriptFile = (Get-ChildItem $AppFolder.FullName -Filter "detect.ps1").FullName
@@ -138,13 +153,19 @@ function Add-ISKApps {
                 $values.Dependency
                 $values.Description
                 $values.RunAs
+                $values.Group
+                $values.DefaultApp
                 Write-Host "Add App:" $AppFolder.Name -ForegroundColor Green
                 Write-Host "Add Dependency:" $values.Dependency -ForegroundColor Green
                 Write-Host "Add Description:" $values.Description -ForegroundColor Green
                 Write-Host "Add RunAs:" $values.RunAs -ForegroundColor Green
+                Write-Host "Add Group Assigment:" $values.Group -ForegroundColor Green
+                Write-Host "Add Set AS Default:" $values.DefaultApp -ForegroundColor Green
             }else{
                 Write-Host "Paramerter File not exist" -ForegroundColor Red
             }
+
+            Start-sleep -s 1
             # check for png or jpg
             $Icon_path = (Get-ChildItem "$($AppFolder.FullName)\*" -Include "*.jpg", "*.png" | Select-Object -First 1).FullName
             if(!$Icon_path){
@@ -154,7 +175,8 @@ function Add-ISKApps {
                 $AppUpload = Add-IntuneWin32App -FilePath $IntuneWinFile -DisplayName $AppFolder.Name -Description $values.Description -Publisher $Publisher -InstallExperience $values.RunAs -Icon $Icon -RestartBehavior "suppress" -DetectionRule $DetectionRule -RequirementRule $RequirementRule -InstallCommandLine $InstallCommandLine -UninstallCommandLine $UninstallCommandLine -CompanyPortalFeaturedApp $True
             
             }
-                       
+
+            Write-Host "App Uploadet"           
             Write-Verbose $AppUpload
                         
             $DependencyValue = $values.Dependency
@@ -173,32 +195,28 @@ function Add-ISKApps {
                 $_
             }
 
-            if($AppGroup){
-                Write-Verbose "Assign App $($AppFolder.Name) to $AssignTo"
-                $AppGrpName = "$AppGroupPrefix$($AppFolder.Name.replace(' ',''))"
-                $AppGroupObj = New-MgGroup -DisplayName $AppGrpName -Description "Installation of win32 app $($AppFolder.Name)" -MailEnabled:$false -SecurityEnabled:$true -MailNickname $($AppFolder.Name.replace(' ',''))
-
-                $AppAssigmentRequest = Add-IntuneWin32AppAssignmentGroup -Include -ID $AppUpload.id -GroupID $AppGroupObj.id -Intent "required" -Notification "showAll" 
-                Write-Verbose $AppAssigmentRequest
-                if($AssignTo){
-                    New-MgGroupMember -GroupId $AppGroupObj.id -DirectoryObjectId $AssignTo
+            if ($values.DefaultApp -eq "Yes") {
+                if ($values.Group) {
+                    Write-Host "Group: " $values.Group
+                    $GroupID = Get-AzureADGroup -SearchString $values.Group | Select-Object -ExpandProperty "ObjectId"
+                    Write-Host "Group ID: " $GroupID
+                    $AppAssigmentRequest = Add-IntuneWin32AppAssignmentGroup -Include -ID $AppUpload.id -GroupID $GroupID -Intent "required" -Notification "showAll"
+                    Write-Verbose $AppAssigmentRequest
+                    Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
                 }
-            }elseif($AssignTo){
-                $AppAssigmentRequest = Add-IntuneWin32AppAssignmentGroup -Include -ID $AppUpload.id -GroupID $AssignTo -Intent "required" -Notification "showAll"
-                Write-Verbose $AppAssigmentRequest
+                else {
+                    Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
+                    Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "required" -Notification "showAll" -Verbose
+                }
             }
             else {
-            # Add assignment for all users
-            Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
-            # Add assignment for all devices
-            Add-IntuneWin32AppAssignmentAllDevices -ID $AppUpload.id -Intent "required" -Notification "showAll" -Verbose  <# Action when all if and elseif conditions are false #>
+                Add-IntuneWin32AppAssignmentAllUsers -ID $AppUpload.id -Intent "available" -Notification "showAll" -Verbose
             }
-
-            }
-        
             
 
-            Start-sleep -s 10
+            }           
+
+            Start-sleep -s 1
         }
         
 

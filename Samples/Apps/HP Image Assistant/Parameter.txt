@@ -1,4 +1,4 @@
 Dependency=
 Description=Installiert HP Image Assistant welche Treiber und Firmware updates installieren kann
 RunAs=system
-
+Group=

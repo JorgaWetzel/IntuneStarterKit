@@ -1,0 +1,4 @@
+Dependency=
+Description=This package installs/upgrades the Multi-lingual ("MUI") release. In some cases, this package will by default be able to install over the top of a language-specific installation. Otherwise, this package will exit and require either a manual uninstall of the language specific installation or having the parameter '/OverwriteInstallation' set to do this automatically.
+RunAs=system
+Group=DEV-WIN-Standard

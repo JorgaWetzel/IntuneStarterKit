@@ -1,7 +1,7 @@
 ﻿$PackageName = "winget-updater"
 $Version = 1
 
-$Path_local = "$Env:Programfiles\oneICT"
+$Path_local = "$Env:Programfiles\oneICT\EndpointManager"
 Start-Transcript -Path "$Path_local\Log\$ProgramName-install.log" -Force
 
 # Upgrade Script

@@ -1,0 +1,4 @@
+Dependency=
+RunAs=system
+Description=Alle Chocoaltey Packete werden regelmässig Upgedated
+Group=DEV-WIN-Standard

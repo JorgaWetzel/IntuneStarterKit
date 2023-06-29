@@ -1,17 +1,8 @@
-﻿$PackageName = "choco-upgrade"
+$PackageName = "choco-upgrade"
 $Version = "1"
 
-$Path_local = "$Env:Programfiles\oneICT"
-Start-Transcript -Path "$Path_local\Log\$ProgramName-install.log" -Force
-
-# Check choco.exe 
-$localprograms = C:\ProgramData\chocolatey\choco.exe list --localonly
-if ($localprograms -like "*Chocolatey*"){
-    Write-Host "Chocolatey installed"
-}else{
-    Write-Host "Chocolatey not Found!"
-    break
-}
+$Path_local = "$Env:Programfiles\oneICT\EndpointManager"
+Start-Transcript -Path "$Path_local\Log\$PackageName-install.log" -Force
 
 # Scheduled Task for "choco upgrade -y"
 $schtaskName = "Chocolatey Upgrade All"

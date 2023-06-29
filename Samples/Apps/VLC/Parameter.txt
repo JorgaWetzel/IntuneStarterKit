@@ -1,3 +1,4 @@
 Dependency=
 Description=VLC Multimedia Player
 RunAs=system
+Group=

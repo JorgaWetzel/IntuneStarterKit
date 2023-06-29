@@ -1,0 +1,4 @@
+Dependency=
+Description=Firefox Browser
+RunAs=system
+

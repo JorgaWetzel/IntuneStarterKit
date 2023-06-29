@@ -1,0 +1,4 @@
+Dependency=
+Description=whatsapp
+RunAs=system
+Group=

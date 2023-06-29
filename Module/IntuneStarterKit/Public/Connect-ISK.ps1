@@ -40,6 +40,18 @@ function Connect-ISK {
     }catch{
         Write-Error $_
     }
+
+
+    try 
+    {
+      Connect-AzureAD
+    }
+    catch 
+    {
+      $exception = $_.Exception.Message
+      exit;
+    }
+
     
 
     

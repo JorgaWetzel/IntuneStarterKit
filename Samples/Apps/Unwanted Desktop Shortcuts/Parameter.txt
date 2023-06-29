@@ -1,3 +1,4 @@
 Dependency=
 RunAs=system
-Description=Veringert die Zeit für das Mappen der SharePoint Daten von 8h auf sofot 
+Description=Veringert die Zeit für das Mappen der SharePoint Daten von 8h auf sofot
+Group=

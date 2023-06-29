@@ -1,0 +1,4 @@
+Dependency=
+Description=Chrome is a fast, simple, and secure web browser, built for the modern web.
+RunAs=system
+

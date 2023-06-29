@@ -1,0 +1,4 @@
+Dependency=
+RunAs=user
+Description=Installiert das Wallpaper und den Lockscreen
+Group=
