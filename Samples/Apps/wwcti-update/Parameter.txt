@@ -1,0 +1,5 @@
+Dependency=
+Description=Detektiert und installiert die neuste version wwCTI Client
+RunAs=system
+Group=
+Default=yes

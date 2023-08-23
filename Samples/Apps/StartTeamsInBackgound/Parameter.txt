@@ -1,0 +1,4 @@
+Dependency=
+Description=Startet Teams im Hintergund nach der Bentuzer anmeldung
+RunAs=user
+Group=

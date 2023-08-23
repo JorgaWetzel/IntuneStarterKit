@@ -1,0 +1,1 @@
+$MidocoPrg_Version = [System.Version](C:\Midoco\bin\midoco.exe --version)

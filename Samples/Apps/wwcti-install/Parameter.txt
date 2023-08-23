@@ -1,0 +1,5 @@
+Dependency=
+Description=CTI Client von WW
+RunAs=system
+Group=
+Default=yes

@@ -1,0 +1,5 @@
+Dependency=
+Description=Installiert das Unternehmensportal Offline
+RunAs=system
+Group=
+Default=yes

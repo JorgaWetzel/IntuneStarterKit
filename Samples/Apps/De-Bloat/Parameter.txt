@@ -2,3 +2,4 @@ Dependency=
 Description=DeBloat Windows
 RunAs=system
 Group=
+default=yes

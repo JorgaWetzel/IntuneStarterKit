@@ -1,0 +1,5 @@
+Dependency=
+Description=Installiert Windows alle Updates
+RunAs=system
+Group=DEV-WIN-Standard
+Default=yes

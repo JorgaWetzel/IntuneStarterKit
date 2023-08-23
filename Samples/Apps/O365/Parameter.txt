@@ -1,0 +1,5 @@
+Dependency=
+RunAs=system
+Description=Installiert Office 365 Pro
+Group=DEV-WIN-Standard
+Default=Yes

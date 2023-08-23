@@ -1,4 +1,4 @@
-﻿$ProgramName = "7zip"
+$ProgramName = "7zip"
 
 $ChocoPrg_Version = [System.Version](C:\ProgramData\chocolatey\choco.exe --version)
 if ($ChocoPrg_Version -gt [System.Version]"2.0") {
